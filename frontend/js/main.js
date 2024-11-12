@@ -37,14 +37,26 @@ async function handleSubmit(event) {
         }
 
         // Show success message
-        const responseMessage = document.getElementById('responseMessage');
-        responseMessage.style.display = 'block';
-        responseMessage.style.backgroundColor = 'var(--off-white)';
-        responseMessage.innerHTML = `
-            <h4 style="color: var(--black); margin-bottom: 10px; font-size: 1.2rem;">Thank you for your RSVP!</h4>
-            <p style="color: var(--grey); margin-bottom: 8px;">A confirmation email will be sent to ${data.email}</p>
-            <p style="color: var(--grey);">You have indicated you will ${data.attendance} attend with ${data.guests} guest${data.guests > 1 ? 's' : ''}.</p>
-        `;
+// Updated message display based on attendance
+const responseMessage = document.getElementById('responseMessage');
+responseMessage.style.display = 'block';
+responseMessage.style.backgroundColor = 'var(--off-white)';
+
+let attendanceMessage = '';
+if (data.attendance === 'yes') {
+    attendanceMessage = `You have indicated that you will be attending with ${data.guests} guest${data.guests > 1 ? 's' : ''}.`;
+} else if (data.attendance === 'no') {
+    attendanceMessage = `You have indicated that you will not be attending.`;
+} else if (data.attendance === 'maybe') {
+    attendanceMessage = `You have indicated that you may attend with ${data.guests} guest${data.guests > 1 ? 's' : ''}.`;
+}
+
+responseMessage.innerHTML = `
+    <h4 style="color: var(--black); margin-bottom: 10px; font-size: 1.2rem;">Thank you for your RSVP!</h4>
+    <p style="color: var(--grey); margin-bottom: 8px;">A confirmation email will be sent to ${data.email}</p>
+    <p style="color: var(--grey);">${attendanceMessage}</p>
+`;
+
 
         // Reset form
         event.target.reset();

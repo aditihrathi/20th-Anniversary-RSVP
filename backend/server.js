@@ -73,12 +73,7 @@ app.post('/api/rsvp', async (req, res) => {
             from: process.env.EMAIL_USER,
             to: req.body.email,
             subject: "Thank you for your RSVP - Anniversary Celebration",
-            html: `
-                <h2>Thank you for your RSVP!</h2>
-                <p>We have received your response for Hema & Hemendra's 20th Anniversary Celebration.</p>
-                <p><strong>Your Response:</strong> ${req.body.attendance}</p>
-                <p><strong>Number of Guests:</strong> ${req.body.guests}</p>
-            `
+            html: emailContent // Use the generated HTML from the template
         });
         console.log('Email sent successfully');
 
