@@ -14,26 +14,18 @@ app.use(cors({
 }));
 
 app.use(bodyParser.json());
-app.use(express.static('public'));
 
-// Root route
+// Basic route for root URL
 app.get('/', (req, res) => {
-    res.json({ 
-        message: 'Anniversary RSVP API is running',
+    res.json({
+        message: 'Anniversary RSVP API',
+        status: 'running',
         endpoints: {
+            root: '/',
             test: '/api/test',
             rsvp: '/api/rsvp'
         }
     });
-});
-
-// Email configuration
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASSWORD
-    }
 });
 
 // Test endpoint
@@ -48,14 +40,6 @@ app.get('/api/test', (req, res) => {
 app.post('/api/rsvp', async (req, res) => {
     try {
         console.log('Received RSVP:', req.body);
-
-        // Validate required fields
-        if (!req.body.email || !req.body.name) {
-            return res.status(400).json({
-                success: false,
-                error: 'Missing required fields'
-            });
-        }
 
         // Send confirmation email
         await transporter.sendMail({
@@ -79,7 +63,7 @@ app.post('/api/rsvp', async (req, res) => {
         res.status(500).json({ 
             success: false, 
             error: 'Failed to process RSVP',
-            details: error.message 
+            details: error.message
         });
     }
 });
@@ -87,5 +71,4 @@ app.post('/api/rsvp', async (req, res) => {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
-    console.log(`Test endpoint: http://localhost:${PORT}/api/test`);
 });
