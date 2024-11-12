@@ -1,11 +1,14 @@
-const FRONTEND_URL = window.location.hostname === 'localhost' 
+// Add this at the top of your main.js
+const API_URL = window.location.hostname === 'localhost' 
     ? 'http://localhost:3000' 
-    : 'https://lovebirdspost.netlify.app';
+    : 'https://lovebirdspost-api.onrender.com';
 
 async function handleSubmit(event) {
     event.preventDefault();
     
     const submitButton = document.querySelector('.submit-btn');
+    const responseMessage = document.getElementById('responseMessage');
+    
     submitButton.textContent = 'Sending...';
     submitButton.disabled = true;
     
@@ -13,11 +16,14 @@ async function handleSubmit(event) {
         const formData = new FormData(event.target);
         const data = Object.fromEntries(formData);
         
+        // Get selected dietary requirements
         const dietary = Array.from(document.querySelectorAll('input[name="dietary"]:checked'))
             .map(checkbox => checkbox.value);
         data.dietary = dietary;
 
-        const response = await fetch(`${API_URL}/rsvp`, {
+        console.log('Sending RSVP data:', data);  // Debug log
+
+        const response = await fetch(`${API_URL}/api/rsvp`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -26,12 +32,13 @@ async function handleSubmit(event) {
         });
 
         const result = await response.json();
+        console.log('Server response:', result);  // Debug log
 
         if (!response.ok) {
             throw new Error(result.error || 'Failed to submit RSVP');
         }
 
-        const responseMessage = document.getElementById('responseMessage');
+        // Success message
         responseMessage.style.display = 'block';
         responseMessage.style.backgroundColor = 'var(--off-white)';
         responseMessage.innerHTML = `
@@ -40,6 +47,7 @@ async function handleSubmit(event) {
             <p style="color: var(--grey);">You have indicated you will ${data.attendance} attend with ${data.guests} guest${data.guests > 1 ? 's' : ''}.</p>
         `;
 
+        // Reset form
         event.target.reset();
         document.querySelectorAll('.attendance-option').forEach(option => {
             option.classList.remove('selected');
@@ -49,7 +57,7 @@ async function handleSubmit(event) {
     } catch (error) {
         console.error('Error:', error);
         
-        const responseMessage = document.getElementById('responseMessage');
+        // Error message
         responseMessage.style.display = 'block';
         responseMessage.style.backgroundColor = '#fff0f0';
         responseMessage.innerHTML = `
@@ -58,7 +66,57 @@ async function handleSubmit(event) {
             <p style="color: #666; font-size: 0.8em;">${error.message}</p>
         `;
     } finally {
+        // Reset button state
         submitButton.textContent = 'Send RSVP';
         submitButton.disabled = false;
     }
+}
+
+// Add this to test the API connection when the page loads
+window.addEventListener('load', async () => {
+    try {
+        const response = await fetch(`${API_URL}/api/test`);
+        const data = await response.json();
+        console.log('API Test Response:', data);
+    } catch (error) {
+        console.error('API Test Error:', error);
+    }
+});
+
+// Make sure your existing functions are still here
+function selectAttendance(element) {
+    document.querySelectorAll('.attendance-option').forEach(option => {
+        option.classList.remove('selected');
+    });
+    
+    element.classList.add('selected');
+    document.getElementById('attendance').value = element.dataset.value;
+
+    const isYesOrMaybe = ['yes', 'maybe'].includes(element.dataset.value);
+    document.querySelectorAll('.guest-counter button').forEach(btn => {
+        btn.disabled = !isYesOrMaybe;
+    });
+    if (!isYesOrMaybe) {
+        updateGuestCount(0, true);
+    }
+}
+
+function updateGuestCount(change, reset = false) {
+    const countDisplay = document.getElementById('guestCount');
+    const guestsInput = document.getElementById('guestsInput');
+    const decreaseBtn = document.getElementById('decreaseBtn');
+    let currentCount = parseInt(countDisplay.textContent);
+
+    if (reset) {
+        currentCount = 1;
+    } else {
+        currentCount += change;
+    }
+
+    currentCount = Math.max(1, Math.min(8, currentCount));
+    
+    countDisplay.textContent = currentCount;
+    guestsInput.value = currentCount;
+    
+    decreaseBtn.disabled = currentCount === 1;
 }
