@@ -8,7 +8,7 @@ require('dotenv').config();
 const Rsvp = require('./models/Rsvp');
 const app = express();
 
-// Updated CORS configuration
+// Middleware
 app.use(cors({
     origin: ['https://lovebirdspost.netlify.app', 'http://localhost:3000'],
     methods: ['GET', 'POST', 'OPTIONS'],
@@ -23,61 +23,52 @@ mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
-.then(() => console.log('MongoDB Connected'))
-.catch(err => console.log('MongoDB Connection Error:', err));
+.then(() => console.log('MongoDB Connected Successfully'))
+.catch(err => console.error('MongoDB Connection Error:', err));
 
-// Root endpoint
-app.get('/', (req, res) => {
-    res.json({
-        message: 'Anniversary RSVP API',
-        status: 'running',
-        endpoints: {
-            test: '/api/test',
-            rsvp: '/api/rsvp',
-            adminRsvps: '/api/rsvps'
-        }
-    });
-});
-
-// Test endpoint
-app.get('/api/test', (req, res) => {
-    res.json({ 
-        message: 'Backend is running!',
-        status: 'OK'
-    });
-});
-
-// Get all RSVPs endpoint (password protected)
-app.get('/api/rsvps', async (req, res) => {
-    try {
-        console.log('Received admin request');
-        // Simple password protection
-        const providedPassword = req.headers.authorization;
-        
-        if (!providedPassword || providedPassword !== process.env.ADMIN_PASSWORD) {
-            console.log('Unauthorized attempt');
-            return res.status(401).json({ error: 'Unauthorized' });
-        }
-
-        const rsvps = await Rsvp.find().sort({ submittedAt: -1 });
-        console.log(`Found ${rsvps.length} RSVPs`);
-        res.json(rsvps);
-    } catch (error) {
-        console.error('Error fetching RSVPs:', error);
-        res.status(500).json({ error: 'Failed to fetch RSVPs' });
-    }
-});
-
-// RSVP endpoint
+// RSVP endpoint with detailed error logging
 app.post('/api/rsvp', async (req, res) => {
     try {
-        console.log('Received RSVP:', req.body);
-        
-        // Create new RSVP in database
-        const newRsvp = new Rsvp(req.body);
-        await newRsvp.save();
+        console.log('Received RSVP request:', req.body);
+
+        // Validate required fields
+        if (!req.body.name || !req.body.email || !req.body.attendance) {
+            console.error('Missing required fields');
+            return res.status(400).json({
+                success: false,
+                error: 'Missing required fields',
+                received: req.body
+            });
+        }
+
+        // Create new RSVP document
+        const newRsvp = new Rsvp({
+            name: req.body.name,
+            email: req.body.email,
+            phone: req.body.phone,
+            attendance: req.body.attendance,
+            guests: req.body.guests,
+            message: req.body.message,
+            dietary: req.body.dietary || []
+        });
+
+        console.log('Created RSVP document:', newRsvp);
+
+        // Save to database
+        const savedRsvp = await newRsvp.save();
+        console.log('Saved RSVP to database:', savedRsvp);
+
+        // Configure email transporter
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASSWORD
+            }
+        });
 
         // Send confirmation email
+        console.log('Attempting to send email to:', req.body.email);
         await transporter.sendMail({
             from: process.env.EMAIL_USER,
             to: req.body.email,
@@ -89,19 +80,31 @@ app.post('/api/rsvp', async (req, res) => {
                 <p><strong>Number of Guests:</strong> ${req.body.guests}</p>
             `
         });
+        console.log('Email sent successfully');
 
         res.json({ 
             success: true, 
-            message: 'RSVP received successfully' 
+            message: 'RSVP received successfully',
+            rsvp: savedRsvp
         });
     } catch (error) {
-        console.error('Server error:', error);
+        console.error('Detailed server error:', error);
         res.status(500).json({ 
             success: false, 
             error: 'Failed to process RSVP',
-            details: error.message
+            details: error.message,
+            stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
         });
     }
+});
+
+// Test endpoint
+app.get('/api/test', (req, res) => {
+    res.json({ 
+        message: 'Backend is running!',
+        status: 'OK',
+        mongoConnection: mongoose.connection.readyState === 1 ? 'Connected' : 'Disconnected'
+    });
 });
 
 const PORT = process.env.PORT || 3000;
