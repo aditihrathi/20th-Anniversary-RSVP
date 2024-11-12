@@ -1,4 +1,4 @@
-const imageUrl = 'URL_TO_UPLOADED_IMAGE'; // Replace with the actual URL where the image is hosted
+const imageUrl = email.png
 
 function generateEmailTemplate(rsvpData) {
   // Determine which template to use based on the RSVP response

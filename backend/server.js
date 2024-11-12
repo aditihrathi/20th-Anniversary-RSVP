@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 require('dotenv').config();
 
 const Rsvp = require('./models/Rsvp');
+const { generateEmailTemplate } = require('./utils/emailTemplates'); // Import the email template function
 const app = express();
 
 // Middleware
@@ -58,6 +59,14 @@ app.post('/api/rsvp', async (req, res) => {
         const savedRsvp = await newRsvp.save();
         console.log('Saved RSVP to database:', savedRsvp);
 
+        // Generate the email content using the custom template
+        const emailContent = generateEmailTemplate(req.body); // Ensure emailContent is defined
+
+        // Check that email content is not empty before attempting to send
+        if (!emailContent) {
+            throw new Error('Failed to generate email content');
+        }
+
         // Configure email transporter
         const transporter = nodemailer.createTransport({
             service: 'gmail',
@@ -93,7 +102,7 @@ app.post('/api/rsvp', async (req, res) => {
     }
 });
 
-// Test endpoint
+// Test endpoint to verify server and MongoDB connection
 app.get('/api/test', (req, res) => {
     res.json({ 
         message: 'Backend is running!',
