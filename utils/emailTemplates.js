@@ -11,20 +11,21 @@ function generateGuestEmailTemplate(rsvpData) {
   <html>
   <head>
       <style>
-          body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; background-color: #f8f4e9; margin: 0; padding: 0; }
-          .container { max-width: 600px; margin: 20px auto; padding: 20px; background-color: #ffffff; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
-          .header { text-align: center; padding: 20px; background-color: #282828; color: #ffffff; border-top-left-radius: 8px; border-top-right-radius: 8px; }
-          .header h1 { font-family: 'Playfair Display SC', serif; font-size: 2rem; }
-          .content { padding: 20px; }
-          .footer { text-align: center; padding: 20px; font-size: 0.8em; color: #666; }
-          .details, .countdown { background-color: #f8f8f8; padding: 20px; margin: 20px 0; border-radius: 4px; }
-          .details h3, .countdown h3 { color: #282828; font-size: 1.2rem; margin-bottom: 10px; }
-          .countdown { text-align: center; font-size: 1.2rem; }
-          .countdown-timer { display: flex; justify-content: center; gap: 10px; }
-          .countdown-item { padding: 10px; background-color: #ffffff; border: 1px solid #d3d3d3; border-radius: 4px; width: 80px; }
-          .countdown-item h4 { margin: 0; font-size: 1.5rem; color: #282828; }
-          .countdown-item p { margin: 0; font-size: 0.9rem; color: #666; text-transform: uppercase; }
-          .button { display: inline-block; padding: 10px 20px; color: #ffffff; background-color: #282828; text-decoration: none; border-radius: 4px; }
+          body { font-family: Arial, sans-serif; color: #333; margin: 0; padding: 0; background-color: #f8f4e9; }
+          .container { max-width: 600px; margin: 20px auto; padding: 20px; background-color: #ffffff; border-radius: 8px; }
+          .header { text-align: center; background-color: #282828; color: #ffffff; padding: 20px; border-radius: 8px 8px 0 0; }
+          .header h1 { font-size: 24px; margin: 0; }
+          .header p { margin: 5px 0; font-size: 14px; }
+          .content { padding: 20px; font-size: 16px; }
+          .details, .countdown { background-color: #f8f8f8; padding: 15px; margin: 20px 0; border-radius: 6px; }
+          .details h3, .countdown h3 { font-size: 18px; color: #282828; margin-bottom: 10px; }
+          .details p, .countdown p { font-size: 14px; margin: 8px 0; }
+          .countdown-timer { display: flex; justify-content: center; gap: 10px; font-size: 16px; }
+          .countdown-item { background-color: #ffffff; border: 1px solid #d3d3d3; padding: 10px; text-align: center; border-radius: 6px; width: 60px; }
+          .countdown-item h4 { font-size: 20px; color: #282828; margin: 0; }
+          .countdown-item p { margin: 0; color: #666; font-size: 12px; }
+          .button { display: inline-block; padding: 10px 20px; color: #ffffff; background-color: #282828; text-decoration: none; border-radius: 4px; font-size: 14px; margin-top: 15px; }
+          .footer { text-align: center; padding: 10px; font-size: 12px; color: #666; }
       </style>
   </head>
   <body>
@@ -35,7 +36,7 @@ function generateGuestEmailTemplate(rsvpData) {
           </div>
           <div class="content">
               <p>Dear ${rsvpData.name},</p>
-              <p>Thank you for confirming your attendance at our anniversary celebration. We are excited to celebrate this with you!</p>
+              <p>Thank you for confirming your attendance at our anniversary celebration. We’re excited to celebrate this milestone with you!</p>
               
               <div class="details">
                   <h3>Your RSVP Details:</h3>
@@ -71,7 +72,7 @@ function generateGuestEmailTemplate(rsvpData) {
               </div>
           </div>
           <div class="footer">
-              <p>If you need to make any changes to your RSVP, please contact Aditi directly.</p>
+              <p>If you need to make any changes to your RSVP, please contact us directly.</p>
           </div>
       </div>
   </body>
@@ -85,13 +86,14 @@ function generateOrganizerEmailTemplate(rsvpData) {
   <html>
   <head>
       <style>
-          body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; background-color: #f8f4e9; margin: 0; padding: 0; }
-          .container { max-width: 600px; margin: 20px auto; padding: 20px; background-color: #ffffff; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
-          .header { text-align: center; padding: 20px; background-color: #282828; color: #ffffff; border-top-left-radius: 8px; border-top-right-radius: 8px; }
-          .header h1 { font-size: 2rem; }
-          .content { padding: 20px; }
-          .rsvp-details { background-color: #f8f8f8; padding: 20px; margin: 20px 0; border-radius: 4px; }
-          .rsvp-details h3 { color: #282828; font-size: 1.2rem; margin-bottom: 10px; }
+          body { font-family: Arial, sans-serif; color: #333; margin: 0; padding: 0; background-color: #f8f4e9; }
+          .container { max-width: 600px; margin: 20px auto; padding: 20px; background-color: #ffffff; border-radius: 8px; }
+          .header { text-align: center; background-color: #282828; color: #ffffff; padding: 20px; border-radius: 8px 8px 0 0; }
+          .header h1 { font-size: 24px; margin: 0; }
+          .content { padding: 20px; font-size: 16px; }
+          .rsvp-details { background-color: #f8f8f8; padding: 15px; margin: 20px 0; border-radius: 6px; }
+          .rsvp-details h3 { font-size: 18px; color: #282828; margin-bottom: 10px; }
+          .rsvp-details p { font-size: 14px; margin: 8px 0; }
       </style>
   </head>
   <body>
