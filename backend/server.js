@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 require('dotenv').config();
 
 const Rsvp = require('./models/Rsvp');
-const { generateEmailTemplate } = require('./utils/emailTemplates'); // Import the email template function
+const { generateEmailTemplate } = require('../utils/emailTemplates');
 const app = express();
 
 // Middleware
