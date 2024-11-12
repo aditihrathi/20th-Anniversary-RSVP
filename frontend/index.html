@@ -733,11 +733,12 @@ body {
                 <article class="article">
                     <p>I am thrilled to invite you to celebrate 20+ years of love and joy as my parents mark their 20th wedding anniversary. Please join me to toast to their love and friendship, share memories, and create more. Your presence would mean a lot to us!</p>
                     <br>
-                    <p>If you have any questions, please reach out to me at (845) 392-8087!</p>
+                    <p>Dress code - Indian or Western formal</p>
+
                     <br>
                     <p>Please RSVP by November 29th to allow us to make all the necessary arrangements.</p>
                     <br>
-                    <p>Dress code - Indian or Western formal</p>
+                    <p>If you have any questions, please reach out to me at (845) 392-8087!</p>
                 </article>
             </div>
             
@@ -921,7 +922,7 @@ body {
             responseMessage.innerHTML = `
                 <h4 style="color: var(--black); margin-bottom: 10px; font-size: 1.2rem;">Thank you for your RSVP!</h4>
                 <p style="color: var(--grey); margin-bottom: 8px;">A confirmation email will be sent to ${data.email}!</p>
-                You have indicated that you ${data.attendance === 'yes' ? 'will be attending' : 'will not be attending'} with ${data.guests} guest${data.guests > 1 ? 's' : ''}.
+                You have indicated that you ${data.attendance === 'yes' ? 'will be attending' : 'may not be attending'} with ${data.guests} guest${data.guests > 1 ? 's' : ''}.
                 `;
 
             event.target.reset();
