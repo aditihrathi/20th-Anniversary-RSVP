@@ -8,10 +8,11 @@ require('dotenv').config();
 const Rsvp = require('./models/Rsvp');
 const app = express();
 
-// Middleware
+// Updated CORS configuration
 app.use(cors({
     origin: ['https://lovebirdspost.netlify.app', 'http://localhost:3000'],
-    methods: ['GET', 'POST'],
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
 }));
 
@@ -25,13 +26,17 @@ mongoose.connect(process.env.MONGODB_URI, {
 .then(() => console.log('MongoDB Connected'))
 .catch(err => console.log('MongoDB Connection Error:', err));
 
-// Email configuration
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASSWORD
-    }
+// Root endpoint
+app.get('/', (req, res) => {
+    res.json({
+        message: 'Anniversary RSVP API',
+        status: 'running',
+        endpoints: {
+            test: '/api/test',
+            rsvp: '/api/rsvp',
+            adminRsvps: '/api/rsvps'
+        }
+    });
 });
 
 // Test endpoint
@@ -45,13 +50,17 @@ app.get('/api/test', (req, res) => {
 // Get all RSVPs endpoint (password protected)
 app.get('/api/rsvps', async (req, res) => {
     try {
+        console.log('Received admin request');
         // Simple password protection
         const providedPassword = req.headers.authorization;
-        if (providedPassword !== process.env.ADMIN_PASSWORD) {
+        
+        if (!providedPassword || providedPassword !== process.env.ADMIN_PASSWORD) {
+            console.log('Unauthorized attempt');
             return res.status(401).json({ error: 'Unauthorized' });
         }
 
         const rsvps = await Rsvp.find().sort({ submittedAt: -1 });
+        console.log(`Found ${rsvps.length} RSVPs`);
         res.json(rsvps);
     } catch (error) {
         console.error('Error fetching RSVPs:', error);
@@ -59,9 +68,11 @@ app.get('/api/rsvps', async (req, res) => {
     }
 });
 
-// RSVP endpoint with database storage
+// RSVP endpoint
 app.post('/api/rsvp', async (req, res) => {
     try {
+        console.log('Received RSVP:', req.body);
+        
         // Create new RSVP in database
         const newRsvp = new Rsvp(req.body);
         await newRsvp.save();

@@ -230,27 +230,39 @@
         let allRSVPs = [];
 
         async function login() {
-            const password = document.getElementById('password').value;
-            try {
-                const response = await fetch(`${BACKEND_URL}/api/rsvps`, {
-                    headers: {
-                        'Authorization': password
-                    }
-                });
+    const password = document.getElementById('password').value;
+    try {
+        console.log('Attempting to login...');
+        const response = await fetch(`${BACKEND_URL}/api/rsvps`, {
+            method: 'GET',
+            headers: {
+                'Authorization': password,
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            credentials: 'include'
+        });
 
-                if (!response.ok) {
-                    throw new Error('Invalid password');
-                }
+        console.log('Response status:', response.status);
 
-                allRSVPs = await response.json();
-                document.getElementById('login').style.display = 'none';
-                document.getElementById('dashboard').style.display = 'block';
-                updateStats();
-                displayRSVPs(allRSVPs);
-            } catch (error) {
-                alert('Login failed: ' + error.message);
-            }
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Error response:', errorText);
+            throw new Error(errorText || 'Failed to login');
         }
+
+        allRSVPs = await response.json();
+        console.log('Received RSVPs:', allRSVPs);
+
+        document.getElementById('login').style.display = 'none';
+        document.getElementById('dashboard').style.display = 'block';
+        updateStats();
+        displayRSVPs(allRSVPs);
+    } catch (error) {
+        console.error('Login error:', error);
+        alert('Login failed: ' + error.message);
+    }
+}
 
         function updateStats() {
             const attending = allRSVPs.filter(rsvp => rsvp.attendance === 'yes');
