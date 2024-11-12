@@ -1,7 +1,6 @@
-const imageUrl = 'https://i.imgur.com/6LYRbGN.png'
+const imageUrl = 'https://i.imgur.com/6LYRbGN.png'; // Direct URL to your hosted image
 
 function generateEmailTemplate(rsvpData) {
-  // Determine which template to use based on the RSVP response
   if (rsvpData.attendance === 'yes') {
     return generateYesEmailTemplate(rsvpData);
   } else if (rsvpData.attendance === 'no') {
@@ -21,28 +20,40 @@ function generateYesEmailTemplate(rsvpData) {
   return `
   <!DOCTYPE html>
   <html>
-  <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; background-color: #f8f4e9;">
+  <head>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display+SC:wght@900&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+  </head>
+  <body style="font-family: 'Times New Roman', Times, serif; line-height: 1.6; color: #333; margin: 0; padding: 0; background-color: #f8f4e9;">
+      <div style="max-width: 600px; margin: 20px auto; padding: 20px; background-color: #ffffff; border-radius: 8px; border: 1px solid #d3d3d3;">
+          <!-- Header with image and title -->
+          <div style="text-align: center; background-color: #282828; padding: 15px;">
+              <h1 style="font-family: 'UnifrakturMaguntia', serif; font-size: 32px; color: #ffffff; margin: 0;">The Lovebird's Post</h1>
+              <p style="font-size: 14px; color: #ffffff; margin: 5px 0;">Hema and Hemendra’s Big Night!</p>
+          </div>
+          
+          <div style="text-align: center;">
+              <img src="${imageUrl}" alt="The Lovebird's Post" style="width: 100%; max-width: 600px; margin: 20px 0; border-radius: 8px;" />
+          </div>
+
           <div style="padding: 20px;">
               <p style="font-size: 16px;">Dear ${rsvpData.name},</p>
               <p style="font-size: 16px;">Thank you for confirming your attendance! We’re excited to celebrate this milestone with you!</p>
               
-              <div style="background-color: #f8f8f8; padding: 15px; margin: 20px 0; border-radius: 6px;">
-                  <h3 style="font-size: 18px; color: #282828; margin-bottom: 10px;">Your RSVP Details:</h3>
+              <div style="background-color: #f8f8f8; padding: 15px; margin: 20px 0; border-radius: 6px; border: 1px solid #d3d3d3;">
+                  <h3 style="font-family: 'Playfair Display SC', serif; font-size: 18px; color: #282828; margin-bottom: 10px;">Your RSVP Details</h3>
                   <p style="font-size: 14px; margin: 8px 0;"><strong>Number of Guests:</strong> ${rsvpData.guests}</p>
                   ${rsvpData.dietary.length ? `<p style="font-size: 14px; margin: 8px 0;"><strong>Dietary Requirements:</strong> ${rsvpData.dietary.join(', ')}</p>` : ''}
               </div>
-              <div style="text-align: center;">
-              <img src="${imageUrl}" alt="The Lovebird's Post" style="width: 100%; max-width: 600px; border-radius: 8px 8px 0 0;" />
-          </div>
-              <div style="background-color: #f8f8f8; padding: 15px; margin: 20px 0; border-radius: 6px;">
-                  <h3 style="font-size: 18px; color: #282828; margin-bottom: 10px;">Event Details:</h3>
+
+              <div style="background-color: #f8f8f8; padding: 15px; margin: 20px 0; border-radius: 6px; border: 1px solid #d3d3d3;">
+                  <h3 style="font-family: 'Playfair Display SC', serif; font-size: 18px; color: #282828; margin-bottom: 10px;">Event Details</h3>
                   <p style="font-size: 14px; margin: 8px 0;"><strong>Date:</strong> December 21st, 2024</p>
                   <p style="font-size: 14px; margin: 8px 0;"><strong>Time:</strong> 7:30 PM - 11:30 PM</p>
                   <p style="font-size: 14px; margin: 8px 0;"><strong>Venue:</strong> Villa Borghesie</p>
               </div>
 
               <div style="text-align: center; padding: 20px;">
-                  <h3 style="font-size: 18px; color: #282828; margin-bottom: 10px;">Countdown to the Event:</h3>
+                  <h3 style="font-family: 'Playfair Display SC', serif; font-size: 18px; color: #282828; margin-bottom: 10px;">Countdown to the Event</h3>
                   <div style="display: flex; justify-content: center; gap: 10px; font-size: 16px;">
                       <div style="background-color: #ffffff; border: 1px solid #d3d3d3; padding: 10px; text-align: center; border-radius: 6px; width: 60px;">
                           <h4 style="font-size: 20px; color: #282828; margin: 0;">${days}</h4>
@@ -55,7 +66,7 @@ function generateYesEmailTemplate(rsvpData) {
                   </div>
               </div>
 
-              <p style="font-size: 16px;">If your plans change, please feel free to reply to this email or text Aditi directly.</p>
+              <p style="font-size: 16px; text-align: center; margin-top: 20px;">If your plans change, please feel free to reply to this email or text Aditi directly.</p>
           </div>
       </div>
   </body>
@@ -63,13 +74,20 @@ function generateYesEmailTemplate(rsvpData) {
   `;
 }
 
-// Template for "No" RSVP
+// Template for "No" RSVP (similar styling applied)
 function generateNoEmailTemplate(rsvpData) {
   return `
   <!DOCTYPE html>
   <html>
-  <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; background-color: #f8f4e9;">
-      <div style="max-width: 600px; margin: 20px auto; padding: 20px; background-color: #ffffff; border-radius: 8px;">
+  <head>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display+SC:wght@900&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+  </head>
+  <body style="font-family: 'Times New Roman', Times, serif; line-height: 1.6; color: #333; margin: 0; padding: 0; background-color: #f8f4e9;">
+      <div style="max-width: 600px; margin: 20px auto; padding: 20px; background-color: #ffffff; border-radius: 8px; border: 1px solid #d3d3d3;">
+          <div style="text-align: center; background-color: #282828; padding: 15px;">
+              <h1 style="font-family: 'UnifrakturMaguntia', serif; font-size: 32px; color: #ffffff; margin: 0;">The Lovebird's Post</h1>
+              <p style="font-size: 14px; color: #ffffff; margin: 5px 0;">Hema and Hemendra’s Big Night!</p>
+          </div>
           <div style="padding: 20px;">
               <p style="font-size: 16px;">Dear ${rsvpData.name},</p>
               <p style="font-size: 16px;">Thank you for letting us know. We’re sorry that you won’t be able to join us for Hema and Hemendra’s 20th Anniversary Celebration, but we understand and will miss having you with us.</p>
@@ -81,13 +99,20 @@ function generateNoEmailTemplate(rsvpData) {
   `;
 }
 
-// Template for "Maybe" RSVP
+// Template for "Maybe" RSVP (similar styling applied)
 function generateMaybeEmailTemplate(rsvpData) {
   return `
   <!DOCTYPE html>
   <html>
-  <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; background-color: #f8f4e9;">
-      <div style="max-width: 600px; margin: 20px auto; padding: 20px; background-color: #ffffff; border-radius: 8px;">
+  <head>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display+SC:wght@900&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+  </head>
+  <body style="font-family: 'Times New Roman', Times, serif; line-height: 1.6; color: #333; margin: 0; padding: 0; background-color: #f8f4e9;">
+      <div style="max-width: 600px; margin: 20px auto; padding: 20px; background-color: #ffffff; border-radius: 8px; border: 1px solid #d3d3d3;">
+          <div style="text-align: center; background-color: #282828; padding: 15px;">
+              <h1 style="font-family: 'UnifrakturMaguntia', serif; font-size: 32px; color: #ffffff; margin: 0;">The Lovebird's Post</h1>
+              <p style="font-size: 14px; color: #ffffff; margin: 5px 0;">Hema and Hemendra’s Big Night!</p>
+          </div>
           <div style="padding: 20px;">
               <p style="font-size: 16px;">Dear ${rsvpData.name},</p>
               <p style="font-size: 16px;">Thank you for your response. We understand that your plans are uncertain, and we hope you’ll be able to join us for Hema and Hemendra’s 20th Anniversary Celebration if possible.</p>
