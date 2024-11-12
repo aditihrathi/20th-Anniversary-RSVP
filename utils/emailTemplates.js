@@ -51,21 +51,6 @@ function generateYesEmailTemplate(rsvpData) {
                   <p style="font-size: 14px; margin: 8px 0;"><strong>Time:</strong> 7:30 PM - 11:30 PM</p>
                   <p style="font-size: 14px; margin: 8px 0;"><strong>Venue:</strong> Villa Borghesie</p>
               </div>
-
-              <div style="text-align: center; padding: 20px;">
-                  <h3 style="font-family: 'Playfair Display SC', serif; font-size: 18px; color: #282828; margin-bottom: 10px;">Countdown to the Event</h3>
-                  <div style="display: flex; justify-content: center; gap: 10px; font-size: 16px;">
-                      <div style="background-color: #ffffff; border: 1px solid #d3d3d3; padding: 10px; text-align: center; border-radius: 6px; width: 60px;">
-                          <h4 style="font-size: 20px; color: #282828; margin: 0;">${days}</h4>
-                          <p style="margin: 0; color: #666; font-size: 12px;">Days</p>
-                      </div>
-                      <div style="background-color: #ffffff; border: 1px solid #d3d3d3; padding: 10px; text-align: center; border-radius: 6px; width: 60px;">
-                          <h4 style="font-size: 20px; color: #282828; margin: 0;">${hours}</h4>
-                          <p style="margin: 0; color: #666; font-size: 12px;">Hours</p>
-                      </div>
-                  </div>
-              </div>
-
               <p style="font-size: 16px; text-align: center; margin-top: 20px;">If your plans change, please feel free to reply to this email or text me at (845) 392-8087!</p>
           </div>
       </div>
