@@ -580,9 +580,9 @@
             responseMessage.style.backgroundColor = 'var(--off-white)';
             responseMessage.innerHTML = `
                 <h4 style="color: var(--black); margin-bottom: 10px; font-size: 1.2rem;">Thank you for your RSVP!</h4>
-                <p style="color: var(--grey); margin-bottom: 8px;">A confirmation email will be sent to ${data.email}</p>
-                <p style="color: var(--grey);">You have indicated you will ${data.attendance} attend with ${data.guests} guest${data.guests > 1 ? 's' : ''}.</p>
-            `;
+                <p style="color: var(--grey); margin-bottom: 8px;">A confirmation email will be sent to ${data.email}!</p>
+                You have indicated that you ${data.attendance === 'yes' ? 'will be attending' : 'will not be attending'} with ${data.guests} guest${data.guests > 1 ? 's' : ''}.
+                `;
 
             event.target.reset();
             document.querySelectorAll('.attendance-option').forEach(option => {
@@ -598,7 +598,7 @@
             responseMessage.style.backgroundColor = '#fff0f0';
             responseMessage.innerHTML = `
                 <h4 style="color: #cc0000; margin-bottom: 10px;">Error Submitting RSVP</h4>
-                <p>Please try again later or contact the organizers directly.</p>
+                <p>Please try again later or contact Aditi directly.</p>
                 <p style="color: #666; font-size: 0.8em;">${error.message}</p>
             `;
         } finally {
