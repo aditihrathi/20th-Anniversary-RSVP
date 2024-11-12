@@ -1,4 +1,4 @@
-const imageUrl = email.png
+// const imageUrl = email.png
 
 function generateEmailTemplate(rsvpData) {
   // Determine which template to use based on the RSVP response
@@ -22,10 +22,6 @@ function generateYesEmailTemplate(rsvpData) {
   <!DOCTYPE html>
   <html>
   <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; background-color: #f8f4e9;">
-      <div style="max-width: 600px; margin: 20px auto; padding: 20px; background-color: #ffffff; border-radius: 8px;">
-          <div style="text-align: center;">
-              <img src="${imageUrl}" alt="The Lovebird's Post" style="width: 100%; max-width: 600px; border-radius: 8px 8px 0 0;" />
-          </div>
           <div style="padding: 20px;">
               <p style="font-size: 16px;">Dear ${rsvpData.name},</p>
               <p style="font-size: 16px;">Thank you for confirming your attendance! We’re excited to celebrate this milestone with you!</p>
