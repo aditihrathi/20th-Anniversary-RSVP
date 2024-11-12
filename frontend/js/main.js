@@ -1,14 +1,10 @@
-// Add this at the top of your main.js
-const API_URL = window.location.hostname === 'localhost' 
-    ? 'http://localhost:3000' 
-    : 'https://lovebirdspost-api.onrender.com';
+// At the top of main.js
+const BACKEND_URL = 'https://lovebirdspost-api.onrender.com';
 
 async function handleSubmit(event) {
     event.preventDefault();
     
     const submitButton = document.querySelector('.submit-btn');
-    const responseMessage = document.getElementById('responseMessage');
-    
     submitButton.textContent = 'Sending...';
     submitButton.disabled = true;
     
@@ -21,9 +17,10 @@ async function handleSubmit(event) {
             .map(checkbox => checkbox.value);
         data.dietary = dietary;
 
-        console.log('Sending RSVP data:', data);  // Debug log
+        console.log('Sending data to:', `${BACKEND_URL}/api/rsvp`);
+        console.log('RSVP data:', data);
 
-        const response = await fetch(`${API_URL}/api/rsvp`, {
+        const response = await fetch(`${BACKEND_URL}/api/rsvp`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -31,14 +28,16 @@ async function handleSubmit(event) {
             body: JSON.stringify(data)
         });
 
+        console.log('Response status:', response.status);
         const result = await response.json();
-        console.log('Server response:', result);  // Debug log
+        console.log('Server response:', result);
 
         if (!response.ok) {
             throw new Error(result.error || 'Failed to submit RSVP');
         }
 
-        // Success message
+        // Show success message
+        const responseMessage = document.getElementById('responseMessage');
         responseMessage.style.display = 'block';
         responseMessage.style.backgroundColor = 'var(--off-white)';
         responseMessage.innerHTML = `
@@ -55,68 +54,34 @@ async function handleSubmit(event) {
         updateGuestCount(0, true);
 
     } catch (error) {
-        console.error('Error:', error);
+        console.error('Submission error:', error);
         
-        // Error message
+        const responseMessage = document.getElementById('responseMessage');
         responseMessage.style.display = 'block';
         responseMessage.style.backgroundColor = '#fff0f0';
         responseMessage.innerHTML = `
             <h4 style="color: #cc0000; margin-bottom: 10px;">Error Submitting RSVP</h4>
             <p>Please try again later or contact the organizers directly.</p>
-            <p style="color: #666; font-size: 0.8em;">${error.message}</p>
+            <p style="font-size: 0.8em; color: #666;">${error.message}</p>
         `;
     } finally {
-        // Reset button state
         submitButton.textContent = 'Send RSVP';
         submitButton.disabled = false;
     }
 }
 
-// Add this to test the API connection when the page loads
-window.addEventListener('load', async () => {
+// Add this test function
+async function testBackendConnection() {
     try {
-        const response = await fetch(`${API_URL}/api/test`);
+        const response = await fetch(`${BACKEND_URL}/api/test`);
         const data = await response.json();
-        console.log('API Test Response:', data);
+        console.log('Backend test response:', data);
+        return data;
     } catch (error) {
-        console.error('API Test Error:', error);
-    }
-});
-
-// Make sure your existing functions are still here
-function selectAttendance(element) {
-    document.querySelectorAll('.attendance-option').forEach(option => {
-        option.classList.remove('selected');
-    });
-    
-    element.classList.add('selected');
-    document.getElementById('attendance').value = element.dataset.value;
-
-    const isYesOrMaybe = ['yes', 'maybe'].includes(element.dataset.value);
-    document.querySelectorAll('.guest-counter button').forEach(btn => {
-        btn.disabled = !isYesOrMaybe;
-    });
-    if (!isYesOrMaybe) {
-        updateGuestCount(0, true);
+        console.error('Backend test error:', error);
+        return null;
     }
 }
 
-function updateGuestCount(change, reset = false) {
-    const countDisplay = document.getElementById('guestCount');
-    const guestsInput = document.getElementById('guestsInput');
-    const decreaseBtn = document.getElementById('decreaseBtn');
-    let currentCount = parseInt(countDisplay.textContent);
-
-    if (reset) {
-        currentCount = 1;
-    } else {
-        currentCount += change;
-    }
-
-    currentCount = Math.max(1, Math.min(8, currentCount));
-    
-    countDisplay.textContent = currentCount;
-    guestsInput.value = currentCount;
-    
-    decreaseBtn.disabled = currentCount === 1;
-}
+// Test connection when page loads
+window.addEventListener('load', testBackendConnection);

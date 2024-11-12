@@ -1,47 +1,34 @@
-const express = require('express');
-const nodemailer = require('nodemailer');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-require('dotenv').config();
-
-const app = express();
-
-// Updated CORS configuration
-app.use(cors({
-    origin: ['https://lovebirdspost.netlify.app', 'http://localhost:3000'],
-    methods: ['GET', 'POST'],
-    credentials: true
-}));
-
-app.use(bodyParser.json());
-
-// Basic route for root URL
-app.get('/', (req, res) => {
-    res.json({
-        message: 'Anniversary RSVP API',
-        status: 'running',
-        endpoints: {
-            root: '/',
-            test: '/api/test',
-            rsvp: '/api/rsvp'
-        }
-    });
+// Add this near the top of your server.js
+app.use((req, res, next) => {
+    console.log(`${req.method} ${req.path}`, req.body);
+    next();
 });
 
-// Test endpoint
-app.get('/api/test', (req, res) => {
-    res.json({ 
-        message: 'Backend is running!',
-        status: 'OK'
-    });
-});
-
-// RSVP endpoint
+// Update your RSVP endpoint
 app.post('/api/rsvp', async (req, res) => {
     try {
-        console.log('Received RSVP:', req.body);
+        console.log('Received RSVP request:', req.body);
+        
+        // Validate required fields
+        if (!req.body.email || !req.body.name || !req.body.attendance) {
+            console.log('Missing required fields');
+            return res.status(400).json({
+                success: false,
+                error: 'Missing required fields'
+            });
+        }
 
-        // Send confirmation email
+        // Email configuration (make sure this is set up in your environment variables)
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASSWORD
+            }
+        });
+
+        console.log('Sending confirmation email to:', req.body.email);
+
         await transporter.sendMail({
             from: process.env.EMAIL_USER,
             to: req.body.email,
@@ -53,6 +40,8 @@ app.post('/api/rsvp', async (req, res) => {
                 <p><strong>Number of Guests:</strong> ${req.body.guests}</p>
             `
         });
+
+        console.log('Email sent successfully');
 
         res.json({ 
             success: true, 
@@ -66,9 +55,4 @@ app.post('/api/rsvp', async (req, res) => {
             details: error.message
         });
     }
-});
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
 });
