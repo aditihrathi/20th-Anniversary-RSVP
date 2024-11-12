@@ -66,7 +66,7 @@ function generateYesEmailTemplate(rsvpData) {
                   </div>
               </div>
 
-              <p style="font-size: 16px; text-align: center; margin-top: 20px;">If your plans change, please feel free to reply to this email or text Aditi directly.</p>
+              <p style="font-size: 16px; text-align: center; margin-top: 20px;">If your plans change, please feel free to reply to this email or text me at (845) 392-8087!</p>
           </div>
       </div>
   </body>
@@ -90,8 +90,8 @@ function generateNoEmailTemplate(rsvpData) {
           </div>
           <div style="padding: 20px;">
               <p style="font-size: 16px;">Dear ${rsvpData.name},</p>
-              <p style="font-size: 16px;">Thank you for letting us know. We’re sorry that you won’t be able to join us for Hema and Hemendra’s 20th Anniversary Celebration, but we understand and will miss having you with us.</p>
-              <p style="font-size: 16px;">If your plans happen to change, please feel free to reach out by replying to this email or texting Aditi directly.</p>
+              <p style="font-size: 16px;">Thank you for letting us know. We’re sorry that you won’t be able to join us for Hema and Hemendra’s 20th Anniversary Celebration, and we will miss having you there.</p>
+              <p style="font-size: 16px;">If your plans happen to change, know that we have room for you! Text me at (845) 392-8087, with any questions or updates.</p>
           </div>
       </div>
   </body>
@@ -115,8 +115,7 @@ function generateMaybeEmailTemplate(rsvpData) {
           </div>
           <div style="padding: 20px;">
               <p style="font-size: 16px;">Dear ${rsvpData.name},</p>
-              <p style="font-size: 16px;">Thank you for your response. We understand that your plans are uncertain, and we hope you’ll be able to join us for Hema and Hemendra’s 20th Anniversary Celebration if possible.</p>
-              <p style="font-size: 16px;">If you decide to attend, please feel free to update your RSVP by replying to this email or texting Aditi directly.</p>
+              <p style="font-size: 16px;">Thank you for your response! We understand that your plans are uncertain, but we hope to see you there! Feel free to text me at (845) 392-8087, if you have any updates or questions.</p>
           </div>
       </div>
   </body>
