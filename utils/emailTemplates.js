@@ -1,4 +1,4 @@
-const imageUrl = https://i.imgur.com/6LYRbGN.png
+const imageUrl = 'https://i.imgur.com/6LYRbGN.png'
 
 function generateEmailTemplate(rsvpData) {
   // Determine which template to use based on the RSVP response
