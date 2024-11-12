@@ -61,7 +61,7 @@ async function handleSubmit(event) {
         responseMessage.style.backgroundColor = '#fff0f0';
         responseMessage.innerHTML = `
             <h4 style="color: #cc0000; margin-bottom: 10px;">Error Submitting RSVP</h4>
-            <p>Please try again later or contact the organizers directly.</p>
+            <p>Please try again later or contact Aditi directly.</p>
             <p style="font-size: 0.8em; color: #666;">${error.message}</p>
         `;
     } finally {
