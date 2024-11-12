@@ -1,4 +1,4 @@
-// const imageUrl = email.png
+const imageUrl = https://i.imgur.com/6LYRbGN.png
 
 function generateEmailTemplate(rsvpData) {
   // Determine which template to use based on the RSVP response
@@ -31,7 +31,9 @@ function generateYesEmailTemplate(rsvpData) {
                   <p style="font-size: 14px; margin: 8px 0;"><strong>Number of Guests:</strong> ${rsvpData.guests}</p>
                   ${rsvpData.dietary.length ? `<p style="font-size: 14px; margin: 8px 0;"><strong>Dietary Requirements:</strong> ${rsvpData.dietary.join(', ')}</p>` : ''}
               </div>
-
+              <div style="text-align: center;">
+              <img src="${imageUrl}" alt="The Lovebird's Post" style="width: 100%; max-width: 600px; border-radius: 8px 8px 0 0;" />
+          </div>
               <div style="background-color: #f8f8f8; padding: 15px; margin: 20px 0; border-radius: 6px;">
                   <h3 style="font-size: 18px; color: #282828; margin-bottom: 10px;">Event Details:</h3>
                   <p style="font-size: 14px; margin: 8px 0;"><strong>Date:</strong> December 21st, 2024</p>
@@ -68,9 +70,6 @@ function generateNoEmailTemplate(rsvpData) {
   <html>
   <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; background-color: #f8f4e9;">
       <div style="max-width: 600px; margin: 20px auto; padding: 20px; background-color: #ffffff; border-radius: 8px;">
-          <div style="text-align: center;">
-              <img src="${imageUrl}" alt="The Lovebird's Post" style="width: 100%; max-width: 600px; border-radius: 8px 8px 0 0;" />
-          </div>
           <div style="padding: 20px;">
               <p style="font-size: 16px;">Dear ${rsvpData.name},</p>
               <p style="font-size: 16px;">Thank you for letting us know. We’re sorry that you won’t be able to join us for Hema and Hemendra’s 20th Anniversary Celebration, but we understand and will miss having you with us.</p>
@@ -89,9 +88,6 @@ function generateMaybeEmailTemplate(rsvpData) {
   <html>
   <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; background-color: #f8f4e9;">
       <div style="max-width: 600px; margin: 20px auto; padding: 20px; background-color: #ffffff; border-radius: 8px;">
-          <div style="text-align: center;">
-              <img src="${imageUrl}" alt="The Lovebird's Post" style="width: 100%; max-width: 600px; border-radius: 8px 8px 0 0;" />
-          </div>
           <div style="padding: 20px;">
               <p style="font-size: 16px;">Dear ${rsvpData.name},</p>
               <p style="font-size: 16px;">Thank you for your response. We understand that your plans are uncertain, and we hope you’ll be able to join us for Hema and Hemendra’s 20th Anniversary Celebration if possible.</p>
