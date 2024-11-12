@@ -1,10 +1,58 @@
-// Add this near the top of your server.js
+const express = require('express');
+const nodemailer = require('nodemailer');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+require('dotenv').config();
+
+// Create the Express app
+const app = express();
+
+// Middleware for logging
 app.use((req, res, next) => {
     console.log(`${req.method} ${req.path}`, req.body);
     next();
 });
 
-// Update your RSVP endpoint
+// Middleware setup
+app.use(cors({
+    origin: ['https://lovebirdspost.netlify.app', 'http://localhost:3000'],
+    methods: ['GET', 'POST'],
+    credentials: true
+}));
+
+app.use(bodyParser.json());
+
+// Basic route for root URL
+app.get('/', (req, res) => {
+    res.json({
+        message: 'Anniversary RSVP API',
+        status: 'running',
+        endpoints: {
+            root: '/',
+            test: '/api/test',
+            rsvp: '/api/rsvp'
+        }
+    });
+});
+
+// Test endpoint
+app.get('/api/test', (req, res) => {
+    res.json({ 
+        message: 'Backend is running!',
+        status: 'OK'
+    });
+});
+
+// Email configuration
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASSWORD
+    }
+});
+
+// RSVP endpoint
 app.post('/api/rsvp', async (req, res) => {
     try {
         console.log('Received RSVP request:', req.body);
@@ -17,15 +65,6 @@ app.post('/api/rsvp', async (req, res) => {
                 error: 'Missing required fields'
             });
         }
-
-        // Email configuration (make sure this is set up in your environment variables)
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASSWORD
-            }
-        });
 
         console.log('Sending confirmation email to:', req.body.email);
 
@@ -55,4 +94,10 @@ app.post('/api/rsvp', async (req, res) => {
             details: error.message
         });
     }
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+    console.log(`Test endpoint: http://localhost:${PORT}/api/test`);
 });
