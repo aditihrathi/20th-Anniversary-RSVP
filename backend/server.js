@@ -1,19 +1,14 @@
 const express = require('express');
 const nodemailer = require('nodemailer');
 const cors = require('cors');
+const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 require('dotenv').config();
 
-// Create the Express app
+const Rsvp = require('./models/Rsvp');
 const app = express();
 
-// Middleware for logging
-app.use((req, res, next) => {
-    console.log(`${req.method} ${req.path}`, req.body);
-    next();
-});
-
-// Middleware setup
+// Middleware
 app.use(cors({
     origin: ['https://lovebirdspost.netlify.app', 'http://localhost:3000'],
     methods: ['GET', 'POST'],
@@ -22,26 +17,13 @@ app.use(cors({
 
 app.use(bodyParser.json());
 
-// Basic route for root URL
-app.get('/', (req, res) => {
-    res.json({
-        message: 'Anniversary RSVP API',
-        status: 'running',
-        endpoints: {
-            root: '/',
-            test: '/api/test',
-            rsvp: '/api/rsvp'
-        }
-    });
-});
-
-// Test endpoint
-app.get('/api/test', (req, res) => {
-    res.json({ 
-        message: 'Backend is running!',
-        status: 'OK'
-    });
-});
+// MongoDB Connection
+mongoose.connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
+.then(() => console.log('MongoDB Connected'))
+.catch(err => console.log('MongoDB Connection Error:', err));
 
 // Email configuration
 const transporter = nodemailer.createTransport({
@@ -52,22 +34,39 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-// RSVP endpoint
-app.post('/api/rsvp', async (req, res) => {
+// Test endpoint
+app.get('/api/test', (req, res) => {
+    res.json({ 
+        message: 'Backend is running!',
+        status: 'OK'
+    });
+});
+
+// Get all RSVPs endpoint (password protected)
+app.get('/api/rsvps', async (req, res) => {
     try {
-        console.log('Received RSVP request:', req.body);
-        
-        // Validate required fields
-        if (!req.body.email || !req.body.name || !req.body.attendance) {
-            console.log('Missing required fields');
-            return res.status(400).json({
-                success: false,
-                error: 'Missing required fields'
-            });
+        // Simple password protection
+        const providedPassword = req.headers.authorization;
+        if (providedPassword !== process.env.ADMIN_PASSWORD) {
+            return res.status(401).json({ error: 'Unauthorized' });
         }
 
-        console.log('Sending confirmation email to:', req.body.email);
+        const rsvps = await Rsvp.find().sort({ submittedAt: -1 });
+        res.json(rsvps);
+    } catch (error) {
+        console.error('Error fetching RSVPs:', error);
+        res.status(500).json({ error: 'Failed to fetch RSVPs' });
+    }
+});
 
+// RSVP endpoint with database storage
+app.post('/api/rsvp', async (req, res) => {
+    try {
+        // Create new RSVP in database
+        const newRsvp = new Rsvp(req.body);
+        await newRsvp.save();
+
+        // Send confirmation email
         await transporter.sendMail({
             from: process.env.EMAIL_USER,
             to: req.body.email,
@@ -79,8 +78,6 @@ app.post('/api/rsvp', async (req, res) => {
                 <p><strong>Number of Guests:</strong> ${req.body.guests}</p>
             `
         });
-
-        console.log('Email sent successfully');
 
         res.json({ 
             success: true, 
@@ -99,5 +96,4 @@ app.post('/api/rsvp', async (req, res) => {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
-    console.log(`Test endpoint: http://localhost:${PORT}/api/test`);
 });
