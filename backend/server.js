@@ -68,13 +68,16 @@ app.post('/api/rsvp', async (req, res) => {
         }
 
         // Configure email transporter
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASSWORD
-            }
-        });
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASSWORD,
+    },
+    logger: true, // Enables logging to console
+    debug: true,  // Enables debugging output
+});
+
 
         // Send confirmation email
         console.log('Attempting to send email to:', req.body.email);
