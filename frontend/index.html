@@ -744,7 +744,7 @@ body {
             responseMessage.style.backgroundColor = 'var(--off-white)';
             responseMessage.innerHTML = `
                 <h4 style="color: var(--black); margin-bottom: 10px; font-size: 1.2rem;">Thank you for your RSVP!</h4>
-                <p style="color: var(--grey); margin-bottom: 8px;">A confirmation email will be sent to ${data.email}!</p>
+                <p style="color: var(--grey); margin-bottom: 8px;">A confirmation email will be sent to ${data.email}! Please check your junk if you don't see it.</p>
                 You have indicated that you ${data.attendance === 'yes' ? 'will be attending' : 'may not be attending'} with ${data.guests} guest${data.guests > 1 ? 's' : ''}.
                 `;
 
