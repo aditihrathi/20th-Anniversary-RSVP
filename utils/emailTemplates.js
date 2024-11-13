@@ -1,4 +1,4 @@
-const imageUrl = 'https://i.imgur.com/6LYRbGN.png';
+const imageUrl = 'https://i.imgur.com/UNDtO5x.png';
 
 function generateEmailTemplate(rsvpData) {
   if (rsvpData.attendance === 'yes') {
