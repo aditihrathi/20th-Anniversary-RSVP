@@ -54,7 +54,7 @@ function generateEmailTemplate(rsvpData) {
 
               </div>
               <p style="font-size: 16px; text-align: center; margin-top: 20px;">If your plans change, please feel free to reply to this email or text me at (845) 392-8087!</p>
-              <p style="font-size: 14px; margin: 8px 0;"><strong>No Gifts Please!!</strong></p>
+              <p style="font-size: 16px; text-align: center; margin: 8px 0;"><strong>Your good wishes are all we need, no gifts, please. </strong></p>
 
           </div>
       </div>
