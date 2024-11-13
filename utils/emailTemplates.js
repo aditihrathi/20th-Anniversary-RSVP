@@ -49,11 +49,13 @@ function generateYesEmailTemplate(rsvpData) {
                   <h3 style="font-family: 'Playfair Display SC', serif; font-size: 18px; color: #282828; margin-bottom: 10px;">Event Details</h3>
                   <p style="font-size: 14px; margin: 8px 0;"><strong>Date:</strong> December 21st, 2024</p>
                   <p style="font-size: 14px; margin: 8px 0;"><strong>Time:</strong> 7:30 PM - 11:30 PM</p>
-                  <p style="font-size: 14px; margin: 8px 0;"><strong>Venue:</strong> Villa Borghese</p>
+                  <p style="font-size: 14px; margin: 8px 0;"><strong>Venue:</strong> Villa Borghese - 70 Widmer Rd, Wappingers Falls, NY 12590</p>
                   <p style="font-size: 14px; margin: 8px 0;"><strong>Venue:</strong> Dress Code - Indian or Western formal</p>
 
               </div>
               <p style="font-size: 16px; text-align: center; margin-top: 20px;">If your plans change, please feel free to reply to this email or text me at (845) 392-8087!</p>
+              <p style="font-size: 14px; margin: 8px 0;"><strong>No Gifts Please!!</strong></p>
+
           </div>
       </div>
   </body>
