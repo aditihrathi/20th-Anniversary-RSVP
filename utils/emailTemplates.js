@@ -1,4 +1,4 @@
-const imageUrl = 'https://i.imgur.com/6LYRbGN.png'; // Direct URL to your hosted image
+const imageUrl = 'https://i.imgur.com/6LYRbGN.png';
 
 function generateEmailTemplate(rsvpData) {
   if (rsvpData.attendance === 'yes') {
@@ -10,8 +10,8 @@ function generateEmailTemplate(rsvpData) {
   }
 }
 
-// Template for "Yes" RSVP
-function generateYesEmailTemplate(rsvpData) {
+// yes
+  function generateYesEmailTemplate(rsvpData) {
   const eventDate = new Date("2024-12-21T19:30:00");
   const timeUntilEvent = eventDate - Date.now();
   const days = Math.floor(timeUntilEvent / (1000 * 60 * 60 * 24));
@@ -63,7 +63,7 @@ function generateYesEmailTemplate(rsvpData) {
   `;
 }
 
-// Template for "No" RSVP (similar styling applied)
+// no
 function generateNoEmailTemplate(rsvpData) {
   return `
   <!DOCTYPE html>
@@ -88,7 +88,7 @@ function generateNoEmailTemplate(rsvpData) {
   `;
 }
 
-// Template for "Maybe" RSVP (similar styling applied)
+// maybe
 function generateMaybeEmailTemplate(rsvpData) {
   return `
   <!DOCTYPE html>

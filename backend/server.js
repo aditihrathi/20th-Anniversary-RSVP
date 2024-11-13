@@ -19,7 +19,7 @@ app.use(cors({
 
 app.use(bodyParser.json());
 
-// MongoDB Connection
+// MongoDB
 mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -27,12 +27,11 @@ mongoose.connect(process.env.MONGODB_URI, {
 .then(() => console.log('MongoDB Connected Successfully'))
 .catch(err => console.error('MongoDB Connection Error:', err));
 
-// RSVP endpoint with detailed error logging
+// RSVP endpoint
 app.post('/api/rsvp', async (req, res) => {
     try {
         console.log('Received RSVP request:', req.body);
 
-        // Validate required fields
         if (!req.body.name || !req.body.email || !req.body.attendance) {
             console.error('Missing required fields');
             return res.status(400).json({
@@ -42,7 +41,6 @@ app.post('/api/rsvp', async (req, res) => {
             });
         }
 
-        // Create new RSVP document
         const newRsvp = new Rsvp({
             name: req.body.name,
             email: req.body.email,
@@ -55,37 +53,32 @@ app.post('/api/rsvp', async (req, res) => {
 
         console.log('Created RSVP document:', newRsvp);
 
-        // Save to database
         const savedRsvp = await newRsvp.save();
         console.log('Saved RSVP to database:', savedRsvp);
 
-        // Generate the email content using the custom template
-        const emailContent = generateEmailTemplate(req.body); // Ensure emailContent is defined
+        const emailContent = generateEmailTemplate(req.body); 
 
-        // Check that email content is not empty before attempting to send
         if (!emailContent) {
             throw new Error('Failed to generate email content');
         }
 
-        // Configure email transporter
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASSWORD,
     },
-    logger: true, // Enables logging to console
-    debug: true,  // Enables debugging output
+    logger: true, 
+    debug: true, 
 });
 
 
-        // Send confirmation email
         console.log('Attempting to send email to:', req.body.email);
         await transporter.sendMail({
             from: process.env.EMAIL_USER,
             to: req.body.email,
             subject: "Thank you for your RSVP - Anniversary Celebration",
-            html: emailContent // Use the generated HTML from the template
+            html: emailContent 
         });
         console.log('Email sent successfully');
 
@@ -105,7 +98,6 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-// Test endpoint to verify server and MongoDB connection
 app.get('/api/test', (req, res) => {
     res.json({ 
         message: 'Backend is running!',

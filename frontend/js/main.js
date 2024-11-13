@@ -1,4 +1,3 @@
-// At the top of main.js
 const BACKEND_URL = 'https://lovebirdspost-api.onrender.com';
 
 async function handleSubmit(event) {
@@ -12,7 +11,7 @@ async function handleSubmit(event) {
         const formData = new FormData(event.target);
         const data = Object.fromEntries(formData);
         
-        // Get selected dietary requirements
+        // NO LONGER USED
         const dietary = Array.from(document.querySelectorAll('input[name="dietary"]:checked'))
             .map(checkbox => checkbox.value);
         data.dietary = dietary;
@@ -36,8 +35,6 @@ async function handleSubmit(event) {
             throw new Error(result.error || 'Failed to submit RSVP');
         }
 
-        // Show success message
-// Updated message display based on attendance
 const responseMessage = document.getElementById('responseMessage');
 responseMessage.style.display = 'block';
 responseMessage.style.backgroundColor = 'var(--off-white)';
@@ -58,7 +55,6 @@ responseMessage.innerHTML = `
 `;
 
 
-        // Reset form
         event.target.reset();
         document.querySelectorAll('.attendance-option').forEach(option => {
             option.classList.remove('selected');
@@ -82,7 +78,7 @@ responseMessage.innerHTML = `
     }
 }
 
-// Add this test function
+// TESTS!!! and debugging
 async function testBackendConnection() {
     try {
         const response = await fetch(`${BACKEND_URL}/api/test`);
@@ -95,5 +91,4 @@ async function testBackendConnection() {
     }
 }
 
-// Test connection when page loads
 window.addEventListener('load', testBackendConnection);
